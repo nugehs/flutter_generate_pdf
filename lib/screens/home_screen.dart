@@ -4,9 +4,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../services/mobile.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,11 +24,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _createPDF() async {
     PdfDocument document = PdfDocument();
-    document.pages.add();
+    final page = document.pages.add();
+
+    page.graphics.drawString(
+        'Welcome to Bashbop', PdfStandardFont(PdfFontFamily.helvetica, 30));
 
     List<int> bytes = document.save();
-    document.dispose();
 
-    SaveAndLaunchFile(bytes, 'Qrcode.pdf');
+    document.dispose();
+    print('Testing pdf');
+    SaveAndLaunchFile(bytes, 'code.pdf');
   }
 }
