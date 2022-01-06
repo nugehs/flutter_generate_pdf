@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -29,10 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
     page.graphics.drawString(
         'Welcome to Bashbop', PdfStandardFont(PdfFontFamily.helvetica, 30));
 
+    page.graphics.drawImage(PdfBitmap(await _readImageData('bashqr.png')),
+        Rect.fromLTWH(0, 100, 440, 550));
+
     List<int> bytes = document.save();
 
     document.dispose();
-    print('Testing pdf');
     SaveAndLaunchFile(bytes, 'code.pdf');
+  }
+
+  Future<Uint8List> _readImageData(String name) async {
+    final data = await rootBundle.load('assets/$name');
+
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 }
